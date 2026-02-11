@@ -1,56 +1,71 @@
 # GraviShift: The Inversion Logic
 
-![GraviShift Logo or Screenshot](assets/background.png)  
-
-## Elevator Pitch
-Flip gravity, solve puzzles, and conquer challenging platformer levels in this unique 2D game.
+**GraviShift** is a 2D platformer game built with Python and the [Arcade](https://arcade.academy/) library. The game introduces a unique mechanic where players can invert gravity to navigate through challenging levels and collect coins.
 
 ---
 
-## Inspiration
-We wanted to create a platformer that challenges players’ perception of movement and physics. Traditional platformers only let you jump, but we thought, “What if gravity itself could be flipped?” The idea came from combining puzzle-solving with reflex-based gameplay to make a unique and engaging experience.
+![Game Screenshot](assets/background.png)
 
 ---
 
-## What it does
-GraviShift is a 2D platformer where players navigate through levels by flipping gravity. The goal is to collect coins, avoid obstacles, and reach the exit door. Each level introduces new challenges, requiring players to think creatively while reacting quickly. The final level rewards players with a satisfying visual and audio effect.
+## 🕹️ Gameplay
+
+- Control a robot character through multiple levels.
+- Collect coins to increase your score.
+- Reach the exit door to advance to the next level.
+- Press **SPACE** to flip gravity and walk on ceilings.
+- Use **LEFT** and **RIGHT** arrows to move.
+- Press **ENTER** to start or restart the game.
 
 ---
 
-## How we built it
-- **Language & Framework:** Python with the Arcade library for 2D game development.  
-- **Core Mechanics:** Gravity flipping, collision detection, collectibles, and multiple levels.  
-- **Assets:** Used Arcade’s built-in sprites for the player, tiles, and coins. Added custom audio for jumps, coin collection, and victories.  
-- **UI:** Displayed score, instructions, and start/win screens with text overlays.  
+## 🎮 Features
+
+- Gravity inversion mechanic
+- Multiple levels with increasing difficulty
+- Coin collection with sound effects
+- Particle effects on level completion
+- Background music and sound effects for actions
+- Start and victory screens
 
 ---
 
-## Challenges we ran into
-- **Physics Handling:** Implementing smooth gravity inversion without glitches.  
-- **Level Design:** Creating challenging yet fair obstacles while keeping gameplay fun.  
-- **Audio Management:** Looping music and playing different sounds for regular and final-level victories.  
-- **Player Boundaries:** Preventing the player from moving outside the screen frame.  
+## ⚡ Controls
+
+| Key           | Action                           |
+|---------------|---------------------------------|
+| LEFT Arrow    | Move left                       |
+| RIGHT Arrow   | Move right                      |
+| SPACE         | Flip gravity                     |
+| ENTER         | Start or restart the game        |
 
 ---
 
-## Accomplishments that we're proud of
-- Successfully implemented gravity-flipping mechanics.  
-- Multiple levels with increasing difficulty and visual effects.  
-- Differentiated sound cues for normal and final-level victories.  
-- A polished start and win screen with score tracking and particle effects.  
+## 🛠️ Installation
 
+1. Make sure Python 3.8+ is installed.
+2. Install the Arcade library:
+
+```bash
+pip install arcade
+
+```
 ---
 
-## What we learned
-- How to use Arcade’s PhysicsEnginePlatformer effectively.  
-- The importance of playtesting to ensure level difficulty is balanced.  
-- Managing game states (start, game, win) to create a smooth user experience.  
-- Audio integration for both background music and event-driven sounds.  
+```bash
+python your_game_file.py
 
----
+```
 
-## What's next for GraviShift: The Inversion Logic
-- Add more levels with new mechanics and creative obstacles.  
-- Introduce power-ups or collectibles that affect gravity or speed.  
-- Improve visual design with custom sprites and animations.  
-- Implement a leaderboard or scoring system for competitive play.
+
+## 💻 Project Structure
+
+```
+project/
+│
+├─ assets/
+│   └─ background.jpg
+├─ GraviShift.py     
+└─ README.md     
+    
+```
