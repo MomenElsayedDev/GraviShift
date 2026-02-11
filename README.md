@@ -19,7 +19,7 @@
 
 ---
 
-## 🎮 Features
+## ⚡ Features
 
 - Gravity inversion mechanic
 - Multiple levels with increasing difficulty
@@ -30,7 +30,7 @@
 
 ---
 
-## ⚡ Controls
+## 🎮 Controls
 
 | Key           | Action                           |
 |---------------|---------------------------------|
@@ -53,7 +53,7 @@ pip install arcade
 ---
 
 ```bash
-python your_game_file.py
+python GraviShift.py
 
 ```
 
