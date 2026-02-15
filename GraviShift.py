@@ -53,14 +53,13 @@ class MyGame(arcade.Window):
         self.gravity_direction = 1  # 1 = normal, -1 = inverted
 
         # --- Load sounds ---
-        self.jump_sound = arcade.load_sound(":resources:sounds/jump1.wav")
-        self.coin_sound = arcade.load_sound(":resources:sounds/coin1.wav")
-        self.win_sound = arcade.load_sound(":resources:sounds/upgrade1.wav")
-        self.final_win_sound = arcade.load_sound(":resources:sounds/laser1.wav")
-        self.start_click_sound = arcade.load_sound(":resources:sounds/coin2.wav")
-
-        self.menu_music = arcade.load_sound(":resources:sounds/rockHit2.wav")
-        self.game_music = arcade.load_sound(":resources:sounds/upgrade1.wav")
+        self.jump_sound = arcade.load_sound("sounds/RobotSound.wav")
+        self.coin_sound = arcade.load_sound("sounds/CoinSound.wav")
+        self.win_sound = arcade.load_sound("sounds/Win.wav")
+        self.final_win_sound = arcade.load_sound("sounds//GameWin.wav")
+        self.start_click_sound = arcade.load_sound("sounds/CoinSound.wav")
+        self.menu_music = arcade.load_sound("sounds/Main.wav")
+        self.game_music = arcade.load_sound("sounds/GameMusic.wav")
         self.menu_looper = None
         self.game_looper = None
 
@@ -93,7 +92,7 @@ class MyGame(arcade.Window):
         )
         self.ui_score = arcade.Text(f"Score: 0", 20, 550, arcade.color.WHITE, 16)
         self.ui_instruction = arcade.Text(
-            "SPACE TO FLIP GRAVITY", 250, 550, arcade.color.GOLD, 14, bold=True
+            "SPACE TO FLIP GRAVITY", 80, 450, arcade.color.GOLD, 14, bold=True
         )
         self.ui_win_label = arcade.Text(
             "VICTORY REACHED!",
@@ -130,11 +129,11 @@ class MyGame(arcade.Window):
 
         # Create player sprite
         self.player_sprite = arcade.Sprite(
-            ":resources:images/animated_characters/robot/robot_idle.png",
+            "assets/Robot.png",
             CHARACTER_SCALING,
         )
         self.player_sprite.center_x = 80
-        self.player_sprite.center_y = 100
+        self.player_sprite.center_y = 250
         self.player_list.append(self.player_sprite)
 
         # Physics engine for platforming
@@ -151,17 +150,17 @@ class MyGame(arcade.Window):
         # --- Floor and Ceiling: green tiles ---
         for x in range(0, SCREEN_WIDTH + 1, 64):
             # Floor
-            floor = arcade.Sprite(":resources:images/tiles/grassMid.png", TILE_SCALING)
+            floor = arcade.Sprite("assets/Grass.png", TILE_SCALING)
             floor.center_x = x
-            floor.center_y = 32
+            floor.center_y = 97
             self.wall_list.append(floor)
 
             # Ceiling
             ceiling = arcade.Sprite(
-                ":resources:images/tiles/grassMid.png", TILE_SCALING
+                "assets/GrassFlip.png", TILE_SCALING
             )
             ceiling.center_x = x
-            ceiling.center_y = SCREEN_HEIGHT - 32
+            ceiling.center_y = SCREEN_HEIGHT - 90
             self.wall_list.append(ceiling)
 
         # --- Level-specific platforms and coins ---
@@ -224,7 +223,7 @@ class MyGame(arcade.Window):
 
         # --- Exit door ---
         self.exit_door = arcade.Sprite(
-            ":resources:images/tiles/doorClosed_top.png", 0.8
+            "assets/Exit.png", 0.8
         )
         self.exit_door.center_x = exit_x
         self.exit_door.center_y = exit_y
