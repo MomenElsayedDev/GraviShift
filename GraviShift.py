@@ -45,10 +45,11 @@ class MyGame(arcade.Window):
         self.coin_list = None
         self.exit_list = None
         self.particles_list = None
-
+        self.music_player = None
         self.player_sprite = None
         self.physics_engine = None
-
+        self.menu_music_player = None
+        self.game_music_player = None
         self.score = 0
         self.gravity_direction = 1  # 1 = normal, -1 = inverted
 
@@ -56,7 +57,7 @@ class MyGame(arcade.Window):
         self.jump_sound = arcade.load_sound("sounds/RobotSound.wav")
         self.coin_sound = arcade.load_sound("sounds/CoinSound.wav")
         self.win_sound = arcade.load_sound("sounds/Win.wav")
-        self.final_win_sound = arcade.load_sound("sounds//GameWin.wav")
+        self.final_win_sound = arcade.load_sound("sounds/GameWin.wav")
         self.start_click_sound = arcade.load_sound("sounds/CoinSound.wav")
         self.menu_music = arcade.load_sound("sounds/Main.wav")
         self.game_music = arcade.load_sound("sounds/GameMusic.wav")
@@ -92,7 +93,13 @@ class MyGame(arcade.Window):
         )
         self.ui_score = arcade.Text(f"Score: 0", 20, 550, arcade.color.WHITE, 16)
         self.ui_instruction = arcade.Text(
-            "SPACE TO FLIP GRAVITY", 80, 450, arcade.color.GOLD, 14, bold=True
+            "SPACE TO FLIP GRAVITY",
+            SCREEN_WIDTH // 2,
+            20,
+            arcade.color.GOLD,
+            14,
+            bold=True,
+            anchor_x="center",
         )
         self.ui_win_label = arcade.Text(
             "VICTORY REACHED!",
@@ -133,7 +140,7 @@ class MyGame(arcade.Window):
             CHARACTER_SCALING,
         )
         self.player_sprite.center_x = 80
-        self.player_sprite.center_y = 250
+        self.player_sprite.center_y = 120
         self.player_list.append(self.player_sprite)
 
         # Physics engine for platforming
@@ -156,9 +163,7 @@ class MyGame(arcade.Window):
             self.wall_list.append(floor)
 
             # Ceiling
-            ceiling = arcade.Sprite(
-                "assets/GrassFlip.png", TILE_SCALING
-            )
+            ceiling = arcade.Sprite("assets/GrassFlip.png", TILE_SCALING)
             ceiling.center_x = x
             ceiling.center_y = SCREEN_HEIGHT - 90
             self.wall_list.append(ceiling)
@@ -222,9 +227,7 @@ class MyGame(arcade.Window):
             exit_x, exit_y = 740, 115
 
         # --- Exit door ---
-        self.exit_door = arcade.Sprite(
-            "assets/Exit.png", 0.8
-        )
+        self.exit_door = arcade.Sprite("assets/Exit.png", 0.8)
         self.exit_door.center_x = exit_x
         self.exit_door.center_y = exit_y
         self.exit_list.append(self.exit_door)
@@ -242,17 +245,24 @@ class MyGame(arcade.Window):
     def on_draw(self):
         """Render the screen"""
         self.clear()
+
         if self.current_state == STATE_START:
             arcade.set_background_color((15, 15, 35))
             self.ui_title.draw()
             self.ui_subtitle.draw()
             if int(self.time_elapsed * 2) % 2 == 0:
                 self.ui_start_prompt.draw()
-            if self.menu_music and self.menu_looper is None:
-                self.menu_looper = MusicLooper(self.menu_music)
-            if self.menu_looper:
-                self.menu_looper.play()
+
+            # تشغيل موسيقى القائمة إذا لم تكن قد بدأت
+            if self.menu_music and self.menu_music_player is None:
+                self.menu_music_player = arcade.play_sound(self.menu_music)
+
         elif self.current_state == STATE_GAME:
+            # إيقاف موسيقى القائمة بشكل آمن عند الانتقال للعب
+            if self.menu_music_player and not isinstance(self.menu_music_player, str):
+                arcade.stop_sound(self.menu_music_player)
+                self.menu_music_player = "DONE"  # نضع نصاً لكي لا يدخل الشرط مرة أخرى
+
             arcade.set_background_color(arcade.color.DARK_BLUE_GRAY)
             self.wall_list.draw()
             self.coin_list.draw()
@@ -260,11 +270,17 @@ class MyGame(arcade.Window):
             self.player_list.draw()
             self.ui_score.draw()
             self.ui_instruction.draw()
-            if self.game_music and self.game_looper is None:
-                self.game_looper = MusicLooper(self.game_music)
-            if self.game_looper:
-                self.game_looper.play()
+
+            # تشغيل موسيقى اللعبة مرة واحدة فقط
+            if self.game_music and self.game_music_player is None:
+                self.game_music_player = arcade.play_sound(self.game_music)
+
         elif self.current_state == STATE_WIN:
+            # إيقاف موسيقى اللعبة عند الفوز بشكل آمن
+            if self.game_music_player and not isinstance(self.game_music_player, str):
+                arcade.stop_sound(self.game_music_player)
+                self.game_music_player = "DONE"
+
             self.wall_list.draw()
             self.player_list.draw()
             self.particles_list.draw()
@@ -328,12 +344,13 @@ class MyGame(arcade.Window):
         if self.current_state in [STATE_START, STATE_WIN]:
             if key == arcade.key.ENTER:
                 arcade.play_sound(self.start_click_sound)
+                self.menu_music_player = None
+                self.game_music_player = None
+
                 self.current_level = 0
-                self.menu_looper = None
-                self.game_looper = None
                 self.setup()
                 self.current_state = STATE_GAME
-            return
+                return
 
         if key == arcade.key.LEFT:
             self.player_sprite.change_x = -PLAYER_MOVEMENT_SPEED
